@@ -1,0 +1,39 @@
+.container {
+  margin-top: 20px;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  width: max-content;
+}
+
+.card {
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid black;
+  background-color: rgb(178, 226, 220);
+  border-radius: 5px;
+  width: max-content;
+}
+
+.description {
+  display: flex;
+}
+
+.header {
+  text-align: center;
+}
+
+.description-items {
+  padding: 10px;
+}
+
+.flag {
+  padding: 10px;
+}
+
+.country-name {
+  width: 250px;
+  padding-bottom: 20px;
+  font-size: 20px;
+}
