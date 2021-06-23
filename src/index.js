@@ -1,8 +1,10 @@
 import './sass/main.scss';
+import '@pnotify/core/dist/BrightTheme.css';
+import '@pnotify/core/dist/Material.css';
+import { error } from '@pnotify/core/dist/PNotify.js';
 import countryTpl from './templates/templateForCounry.hbs';
 import listTpl from './templates/templateForListCountries.hbs';
 import getFetch from './fetchCountries.js';
-
 
 const debounce = require('lodash.debounce');
 const searchForm = document.getElementById('search-form');
@@ -13,27 +15,27 @@ searchForm.addEventListener(
   'input',
   debounce(e => {
     e.preventDefault();
-    let countryName = e.target.value.toLowerCase();
-
-    getFetch(URL, countryName, createCountryCard, countryContainer);
+    let countryName = e.target.value.toLowerCase().trim();
+    if (countryName !== '') {
+      getFetch(URL, countryName).then(createCountryCard);
+    }
+    countryContainer.innerHTML = '';
   }, 500),
 );
 
 function createCountryCard(countryArray) {
   if (countryArray.length === 1) {
-    return countryTpl(countryArray);
+    return (countryContainer.innerHTML = countryTpl(countryArray));
+  } else if (countryArray.length > 1 && countryArray.length <= 10) {
+    return (countryContainer.innerHTML = listTpl(countryArray));
   }
-  return listTpl(countryArray);
+  return logError(countryArray);
 }
 
-
- import { error, defaultModules } from '@pnotify/core';
-import * as PNotifyMobile from '@pnotify/mobile';
-
-defaultModules.set(PNotifyMobile, {});
-
-error({
-  text: 'Notice me, senpai!'
-}); 
-
-  
+const logError = countryArray => {
+  if (countryArray.length > 10) {
+    error({
+      text: 'Найдено слишком много совпадений. Пожалуйста введите более точный запрос.',
+    });
+  }
+};
